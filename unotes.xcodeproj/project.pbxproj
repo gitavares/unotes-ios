@@ -15,7 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3CDEB18C223D2877008193DB /* uwrite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uwrite.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CDEB18C223D2877008193DB /* unotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = unotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CDEB18F223D2877008193DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3CDEB191223D2877008193DB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3CDEB194223D2877008193DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -38,7 +38,7 @@
 		3CDEB183223D2877008193DB = {
 			isa = PBXGroup;
 			children = (
-				3CDEB18E223D2877008193DB /* uwrite */,
+				3CDEB18E223D2877008193DB /* unotes */,
 				3CDEB18D223D2877008193DB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,12 +46,12 @@
 		3CDEB18D223D2877008193DB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3CDEB18C223D2877008193DB /* uwrite.app */,
+				3CDEB18C223D2877008193DB /* unotes.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3CDEB18E223D2877008193DB /* uwrite */ = {
+		3CDEB18E223D2877008193DB /* unotes */ = {
 			isa = PBXGroup;
 			children = (
 				3CDEB18F223D2877008193DB /* AppDelegate.swift */,
@@ -61,15 +61,15 @@
 				3CDEB198223D287A008193DB /* LaunchScreen.storyboard */,
 				3CDEB19B223D287A008193DB /* Info.plist */,
 			);
-			path = uwrite;
+			path = unotes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3CDEB18B223D2877008193DB /* uwrite */ = {
+		3CDEB18B223D2877008193DB /* unotes */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3CDEB19E223D287A008193DB /* Build configuration list for PBXNativeTarget "uwrite" */;
+			buildConfigurationList = 3CDEB19E223D287A008193DB /* Build configuration list for PBXNativeTarget "unotes" */;
 			buildPhases = (
 				3CDEB188223D2877008193DB /* Sources */,
 				3CDEB189223D2877008193DB /* Frameworks */,
@@ -79,9 +79,9 @@
 			);
 			dependencies = (
 			);
-			name = uwrite;
+			name = unotes;
 			productName = uwrite;
-			productReference = 3CDEB18C223D2877008193DB /* uwrite.app */;
+			productReference = 3CDEB18C223D2877008193DB /* unotes.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -99,7 +99,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3CDEB187223D2877008193DB /* Build configuration list for PBXProject "uwrite" */;
+			buildConfigurationList = 3CDEB187223D2877008193DB /* Build configuration list for PBXProject "unotes" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -112,7 +112,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3CDEB18B223D2877008193DB /* uwrite */,
+				3CDEB18B223D2877008193DB /* unotes */,
 			);
 		};
 /* End PBXProject section */
@@ -284,12 +284,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9YGPLVL77V;
-				INFOPLIST_FILE = uwrite/Info.plist;
+				INFOPLIST_FILE = unotes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.giselletavares.uwrite;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giselletavares.unotes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -302,12 +302,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9YGPLVL77V;
-				INFOPLIST_FILE = uwrite/Info.plist;
+				INFOPLIST_FILE = unotes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.giselletavares.uwrite;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giselletavares.unotes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -317,7 +317,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3CDEB187223D2877008193DB /* Build configuration list for PBXProject "uwrite" */ = {
+		3CDEB187223D2877008193DB /* Build configuration list for PBXProject "unotes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3CDEB19C223D287A008193DB /* Debug */,
@@ -326,7 +326,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3CDEB19E223D287A008193DB /* Build configuration list for PBXNativeTarget "uwrite" */ = {
+		3CDEB19E223D287A008193DB /* Build configuration list for PBXNativeTarget "unotes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3CDEB19F223D287A008193DB /* Debug */,

@@ -7,21 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3CD684CC223FEF980011A28A /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD684CB223FEF980011A28A /* Category.swift */; };
+		3CD684CE223FEFA50011A28A /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD684CD223FEFA50011A28A /* Note.swift */; };
+		3CD684D0223FF5E10011A28A /* NoteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD684CF223FF5E10011A28A /* NoteTableViewController.swift */; };
+		3CD684D2223FFB070011A28A /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD684D1223FFB070011A28A /* NoteViewController.swift */; };
+		3CD684D422401D880011A28A /* DefaultTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD684D322401D880011A28A /* DefaultTableViewController.swift */; };
 		3CDEB190223D2877008193DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDEB18F223D2877008193DB /* AppDelegate.swift */; };
-		3CDEB192223D2877008193DB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDEB191223D2877008193DB /* ViewController.swift */; };
+		3CDEB192223D2877008193DB /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDEB191223D2877008193DB /* CategoryTableViewController.swift */; };
 		3CDEB195223D2877008193DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CDEB193223D2877008193DB /* Main.storyboard */; };
 		3CDEB197223D287A008193DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CDEB196223D287A008193DB /* Assets.xcassets */; };
 		3CDEB19A223D287A008193DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CDEB198223D287A008193DB /* LaunchScreen.storyboard */; };
+		7DEED128760090F8F11113F7 /* Pods_unotes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2CA9BC19A03A85CCD272E06 /* Pods_unotes.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0453D4CDA5D6FB29C3D6224E /* Pods-unotes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-unotes.debug.xcconfig"; path = "Target Support Files/Pods-unotes/Pods-unotes.debug.xcconfig"; sourceTree = "<group>"; };
+		3CD684CB223FEF980011A28A /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		3CD684CD223FEFA50011A28A /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		3CD684CF223FF5E10011A28A /* NoteTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTableViewController.swift; sourceTree = "<group>"; };
+		3CD684D1223FFB070011A28A /* NoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
+		3CD684D322401D880011A28A /* DefaultTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTableViewController.swift; sourceTree = "<group>"; };
 		3CDEB18C223D2877008193DB /* unotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = unotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CDEB18F223D2877008193DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3CDEB191223D2877008193DB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3CDEB191223D2877008193DB /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 		3CDEB194223D2877008193DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3CDEB196223D287A008193DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3CDEB199223D287A008193DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3CDEB19B223D287A008193DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8AA7D75B35FD499BCD2931D2 /* Pods-unotes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-unotes.release.xcconfig"; path = "Target Support Files/Pods-unotes/Pods-unotes.release.xcconfig"; sourceTree = "<group>"; };
+		F2CA9BC19A03A85CCD272E06 /* Pods_unotes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_unotes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +43,49 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DEED128760090F8F11113F7 /* Pods_unotes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3CD684C8223FEF550011A28A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3CD684CB223FEF980011A28A /* Category.swift */,
+				3CD684CD223FEFA50011A28A /* Note.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		3CD684C9223FEF640011A28A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3CDEB193223D2877008193DB /* Main.storyboard */,
+				3CDEB198223D287A008193DB /* LaunchScreen.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3CD684CA223FEF6C0011A28A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				3CDEB191223D2877008193DB /* CategoryTableViewController.swift */,
+				3CD684CF223FF5E10011A28A /* NoteTableViewController.swift */,
+				3CD684D1223FFB070011A28A /* NoteViewController.swift */,
+				3CD684D322401D880011A28A /* DefaultTableViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		3CDEB183223D2877008193DB = {
 			isa = PBXGroup;
 			children = (
 				3CDEB18E223D2877008193DB /* unotes */,
 				3CDEB18D223D2877008193DB /* Products */,
+				46FEF7D7C7FCAAE7FB5E6464 /* Pods */,
+				C4971CC98B0917CB655D3327 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -55,13 +101,30 @@
 			isa = PBXGroup;
 			children = (
 				3CDEB18F223D2877008193DB /* AppDelegate.swift */,
-				3CDEB191223D2877008193DB /* ViewController.swift */,
-				3CDEB193223D2877008193DB /* Main.storyboard */,
+				3CD684C8223FEF550011A28A /* Model */,
+				3CD684CA223FEF6C0011A28A /* Controller */,
+				3CD684C9223FEF640011A28A /* View */,
 				3CDEB196223D287A008193DB /* Assets.xcassets */,
-				3CDEB198223D287A008193DB /* LaunchScreen.storyboard */,
 				3CDEB19B223D287A008193DB /* Info.plist */,
 			);
 			path = unotes;
+			sourceTree = "<group>";
+		};
+		46FEF7D7C7FCAAE7FB5E6464 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0453D4CDA5D6FB29C3D6224E /* Pods-unotes.debug.xcconfig */,
+				8AA7D75B35FD499BCD2931D2 /* Pods-unotes.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		C4971CC98B0917CB655D3327 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F2CA9BC19A03A85CCD272E06 /* Pods_unotes.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +134,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3CDEB19E223D287A008193DB /* Build configuration list for PBXNativeTarget "unotes" */;
 			buildPhases = (
+				033B51C05571C936290B2AB7 /* [CP] Check Pods Manifest.lock */,
 				3CDEB188223D2877008193DB /* Sources */,
 				3CDEB189223D2877008193DB /* Frameworks */,
 				3CDEB18A223D2877008193DB /* Resources */,
+				0FA6032F217973C1CEBF7396 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -130,13 +195,71 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		033B51C05571C936290B2AB7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-unotes-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0FA6032F217973C1CEBF7396 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-unotes/Pods-unotes-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-unotes/Pods-unotes-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3CDEB188223D2877008193DB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3CDEB192223D2877008193DB /* ViewController.swift in Sources */,
+				3CDEB192223D2877008193DB /* CategoryTableViewController.swift in Sources */,
 				3CDEB190223D2877008193DB /* AppDelegate.swift in Sources */,
+				3CD684CC223FEF980011A28A /* Category.swift in Sources */,
+				3CD684D0223FF5E10011A28A /* NoteTableViewController.swift in Sources */,
+				3CD684D2223FFB070011A28A /* NoteViewController.swift in Sources */,
+				3CD684D422401D880011A28A /* DefaultTableViewController.swift in Sources */,
+				3CD684CE223FEFA50011A28A /* Note.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,6 +403,7 @@
 		};
 		3CDEB19F223D287A008193DB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0453D4CDA5D6FB29C3D6224E /* Pods-unotes.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -298,6 +422,7 @@
 		};
 		3CDEB1A0223D287A008193DB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8AA7D75B35FD499BCD2931D2 /* Pods-unotes.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

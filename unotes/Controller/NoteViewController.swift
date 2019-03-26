@@ -27,7 +27,6 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     // for image
     let pickerController = UIImagePickerController()
     
-    
     @IBOutlet var txtNote: UITextView!
     @IBOutlet var txtTitle: UITextField!
     @IBOutlet var mapLocation: MKMapView!
@@ -41,12 +40,16 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         pickerController.delegate = self
         pickerController.allowsEditing = true
         
-        let TapGesture = UITapGestureRecognizer(target: self, action: #selector(tapDetected(sender:)))
-        TapGesture.delegate = self as? UIGestureRecognizerDelegate
-        txtNote.addGestureRecognizer(TapGesture)
+//        let TapGesture = UITapGestureRecognizer(target: self, action: #selector(tapDetected(sender:)))
+//        TapGesture.delegate = self as? UIGestureRecognizerDelegate
+//        txtNote.addGestureRecognizer(TapGesture)
         
         loadTheNote()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        decodeTheNoteImageTags()
     }
     
     
@@ -71,7 +74,8 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
                         note?.title = txtTitle.text!
                         note?.note = txtNote.text ?? ""
                         note?.modifiedDate = Date()
-                        //                note?.location
+                        //                note?.locationLatitude
+                        //                note?.locationLongitude
                     }
                 }
             } catch {
@@ -97,52 +101,214 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         txtTitle.text = note?.title
         txtNote.text = note?.note
         
+//        loadFormattedTextView()
+        
         if note?.locationLatitude != "" {
             // call the load map location function
             loadLocation()
         }
+        
+    }
+    
+//    func loadFormattedTextView(){
+//        let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
+//        let attrString = NSAttributedString(string: note?.note! ?? "", attributes: attrs)
+//        textStorage = FormatTextStorage()
+//        textStorage.append(attrString)
+//
+//        txtNote.delegate = self
+//        view.addSubview(txtNote)
+//    }
+    
+    func updateTheNoteWithImageTag(named imageName: String, image: UIImage){
+        //create and NSTextAttachment and add your image to it.
+        var mutableAttributedString :NSMutableAttributedString!
+        mutableAttributedString = NSMutableAttributedString(attributedString: txtNote.attributedText)
+        
+        let attachment = NSTextAttachment()
+        attachment.image = image
+//        let oldWidth = attachment.image!.size.width;
+//        let scaleFactor = (oldWidth / (txtNote.frame.size.width - 10))
+//
+//        attachment.image = UIImage(cgImage: attachment.image!.cgImage!, scale: scaleFactor, orientation: .up)
+        let imageInTags = imageName.setTagImage
+        //put your NSTextAttachment into and attributedString
+        let attString = NSAttributedString(attachment: attachment)
+        //add this attributed string to the current position.
+        txtNote.textStorage.insert(attString, at: txtNote.selectedRange.location)
+        let range = txtNote.selectedRange
+        
+        mutableAttributedString.beginEditing()
+        mutableAttributedString.replaceCharacters(in: range, with: NSAttributedString(string: imageInTags))
+        mutableAttributedString.endEditing()
+        txtNote.attributedText = mutableAttributedString
+        
+//        print("======attString: \(attString)")
+//        print("======txtNote.attributedText: \(String(describing: txtNote.attributedText))")
+//        print("======txtNote.textStorage: \(txtNote.textStorage)")
+//        print("======txtNote: \(String(describing: txtNote))")
+//        print("======txtNote TEXT: \(String(describing: txtNote.text))")
+        
+//        print("\(txtNote.selectedRange.location)")
+//
+//        print("===Attribute text: \(String(describing: txtNote.attributedText))")
+//        print("===Only txtNote: \(String(describing: txtNote))")
+    }
+    
+    func decodeTheNoteImageTags() {
+        
+        let attributedString = NSMutableAttributedString(string: txtNote.text)
+        print("=====attributedString: \(attributedString)")
+        
+        let range = NSRange(location: 0, length: attributedString.string.utf16.count)
+        let regex = NSRegularExpression("\\[image\\](.*?)\\[/image\\]")
+        
+        for match in regex.matches(in: attributedString.string, options: [], range: range) {
+            if let rangeForImageName = Range(match.range(at: 1), in: attributedString.string){
+                
+                let imageName = String(attributedString.string[rangeForImageName])
+                print("======imageName: \(imageName)")
+                
+//                let imageNameRange = NSRange(imageName)
+                
+                if let image = loadImage(named: imageName) {
+                    
+//                    let textAttachment = NSTextAttachment()
+//                    textAttachment.image = UIImage(named: "Image")
+//                    textAttachment.setImageHeight(16) // Whatever you need to match your font
+//
+//                    let imageString = NSAttributedString(attachment: textAttachment)
+//                    yourAttributedString.appendAttributedString(imageString)
+                    
+                    
+                  
+                    let attachment = NSTextAttachment()
+                    attachment.image = image
+                    attachment.setImageHeight(width: txtNote.frame.size.width)
+//                    let oldWidth = attachment.image!.size.width
+//                    let scaleFactor = (oldWidth / (txtNote.frame.size.width - 10))
+//                    attachment.image = UIImage(cgImage: attachment.image!.cgImage!, scale: scaleFactor, orientation: .up)
+                    
+                    let attString = NSAttributedString(attachment: attachment)
+                    
+//                    attributedString.beginEditing()
+//                    attributedString.replaceCharacters(in: imageNameRange!, with: attString)
+//                    attributedString.endEditing()
+                    
+                    //add this attributed string to the current position.
+                    txtNote.textStorage.insert(attString, at: txtNote.selectedRange.location)
+                } else {
+                    print("Image not found")
+                }
+            }
+        }
+        
+//        let matchesCount = regex.numberOfMatches(in: attributedString.string, options: [], range: range)
+//        print("======matchesCount: \(matchesCount)")
+//
+//        for _ in 0..<matchesCount {
+////                let match = regex.matches(in: attributedString.string, options: [], range: NSRange(location: 0, length: attributedString.string.utf16.count))[0]
+//            let match = regex.matches(in: attributedString.string, options: [], range: range)[0]
+//            print("======match: \(match)")
+//
+////                if let rangeForImageName = Range(match.range(at: 1), in: attributedString.string){
+//
+//            }
+//        }
+        
+            
+        
+        
+        
+//        let attachment = NSTextAttachment()
+//        attachment.image = loadImage(named: imageName)
+//        let oldWidth = attachment.image!.size.width;
+//        let scaleFactor = (oldWidth / (txtNote.frame.size.width - 10))
+//
+//        attachment.image = UIImage(cgImage: attachment.image!.cgImage!, scale: scaleFactor, orientation: .up)
+//        //put your NSTextAttachment into and attributedString
+//        let attString = NSAttributedString(attachment: attachment)
+//        //add this attributed string to the current position.
+//        txtNote.textStorage.insert(attString, at: txtNote.selectedRange.location)
+        
+//        return attributedString
+        
+        
+//        let attributedString = NSMutableAttributedString(string: self, attributes: nil)
+//        do {
+//            let regex = try NSRegularExpression(pattern: "<img>(.*?)</img>", options: [])
+//            let matchesCount = regex.matches(in: attributedString.string,
+//                                             options: [],
+//                                             range: NSRange(location: 0, length: attributedString.string.utf16.count)).count
+//            for _ in 0..<matchesCount {
+//                let match = regex.matches(in: attributedString.string,
+//                                          options: [],
+//                                          range: NSRange(location: 0, length: attributedString.string.utf16.count))[0]
+//                if let rangeForURL = Range(match.range(at: 1), in: attributedString.string) {
+//                    let imageLocalURL = String(attributedString.string[rangeForURL])
+//
+//                    let lowerBoundForImageLocalURLwrappedInTags = self.distance(from: self.startIndex, to: rangeForURL.lowerBound) - 5
+//                    let upperBoundForImageLocalURLwrappedInTags = self.distance(from: self.startIndex, to: rangeForURL.upperBound) + 6
+//                    if let localImage = UIImage.loadImageFrom(path: imageLocalURL)
+//                    {
+//                        let imageAttachment = NSTextAttachment()
+//                        let oldWidth = localImage.size.width
+//                        imageAttachment.image = localImage.resizeImage(scale: (UIScreen.main.bounds.width - 10)/oldWidth)
+//                        let imageString = NSMutableAttributedString(attachment: imageAttachment)
+//                        let rangeForImageLocalURLwrappedInTags = NSMakeRange(lowerBoundForImageLocalURLwrappedInTags, upperBoundForImageLocalURLwrappedInTags - lowerBoundForImageLocalURLwrappedInTags)
+//                        attributedString.beginEditing()
+//                        attributedString.replaceCharacters(in: rangeForImageLocalURLwrappedInTags,
+//                                                           with: imageString)
+//                        attributedString.endEditing()
+//                    }
+//                }
+//            }
+//        } catch(let error) {
+//            print(error.localizedDescription)
+//        }
+//        return attributedString
     }
     
     
     //MARK: - Gestures functions
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        txtNote.resignFirstResponder()
-    }
-
-    @objc func tapDetected(sender: UITapGestureRecognizer) {
-
-        print("Tap On Image")
-        print("Tap Location",sender.location(in: sender.view))
-
-        guard case let senderView = sender.view, (senderView is UITextView) else {
-            return
-        }
-
-        // calculate layout manager touch location
-        let textView = senderView as! UITextView, // we sure this is an UITextView, so force casting it
-        layoutManager = textView.layoutManager
-
-        var location = sender.location(in: textView)
-        location.x -= textView.textContainerInset.left
-        location.y -= textView.textContainerInset.top
-
-        print("location", location)
-
-        let textContainer = textView.textContainer,
-        characterIndex = layoutManager.characterIndex(for: location, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil),
-        textStorage = textView.textStorage
-
-        guard characterIndex < textStorage.length else {
-            return
-        }
-    }
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return true
+//    }
+//
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        txtNote.resignFirstResponder()
+//    }
+//
+//    @objc func tapDetected(sender: UITapGestureRecognizer) {
+//
+//        print("Tap On Image")
+//        print("Tap Location",sender.location(in: sender.view))
+//
+//        guard case let senderView = sender.view, (senderView is UITextView) else {
+//            return
+//        }
+//
+//        // calculate layout manager touch location
+//        let textView = senderView as! UITextView, // we sure this is an UITextView, so force casting it
+//        layoutManager = textView.layoutManager
+//
+//        var location = sender.location(in: textView)
+//        location.x -= textView.textContainerInset.left
+//        location.y -= textView.textContainerInset.top
+//
+//        print("location", location)
+//
+//        let textContainer = textView.textContainer,
+//        characterIndex = layoutManager.characterIndex(for: location, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil),
+//        textStorage = textView.textStorage
+//
+//        guard characterIndex < textStorage.length else {
+//            return
+//        }
+//    }
     
-    //MASK: - Images functions
+    //MARK: - Images functions
     
     @IBAction func addImage(_ sender: Any) {
         
@@ -151,13 +317,11 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         let cameraAction = UIAlertAction(title: "Camera", style: .default) { (action) in
             self.pickerController.sourceType = .camera
             self.present(self.pickerController, animated: true, completion: nil)
-            
         }
         
         let photosLibraryAction = UIAlertAction(title: "Photos Library", style: .default) { (action) in
             self.pickerController.sourceType = .photoLibrary
             self.present(self.pickerController, animated: true, completion: nil)
-            
         }
         
         let savedPhotosAction = UIAlertAction(title: "Saved Photos Album", style: .default) { (action) in
@@ -174,7 +338,6 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         
         present(alertController, animated: true, completion: nil)
         present(pickerController, animated: true, completion: nil)
-        
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -185,59 +348,33 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         }
         
         let imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL
-        
         print("=====Image URL: \(String(describing: imageURL))")
         
-        //this block of code grabs the path of the file
-        let imagePath =  imageURL?.path
-        print("=====Image PATH: \(String(describing: imagePath))")
-        
-        let localPath = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(imagePath!)
-        print("=====Image LOCAL PATH: \(String(describing: localPath))")
-        
-        //this block of code adds data to the above path
-        let path = localPath?.relativePath
-        print("=====JUST PATH: \(String(describing: localPath))")
-        
-        let imageName = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        let imageName = imageURL?.lastPathComponent
         print("=====Image NAME: \(String(describing: imageName))")
-        
-        let data = imageName.pngData()
-        print("=====Image DATA: \(String(describing: data))")
-        
-//        data?.writeToFile(imagePath, atomically: true)
-        
-        //this block grabs the NSURL so you can use it in CKASSET
-        let photoURL = NSURL(fileURLWithPath: path!)
-        print("=====Image URL in the end: \(String(describing: photoURL))")
-        
-//        guard let theImage = NSImage(contentsOfURL: openPanel.URL!) else {
-//            showErrorMessage("Unable to load image")
-//            return
-//        }
-//        guard let store = self.textEditor.textStorage else { abort() }
-//
-//        let cell = NSTextAttachmentCell(imageCell: theImage)
-//        let txtAtt = NSTextAttachment(data: theImage.imageJPGRepresentation, ofType: kUTTypeJPEG as String)
-//        txtAtt.attachmentCell = cell
-//        let str = NSAttributedString(attachment: txtAtt)
-//        let range = self.textEditor.selectedRange()
-//        store.replaceCharactersInRange(range, withAttributedString: str)
 
         print("Image------:\(selectedImage)")
-    
+        
+        //save the image
+        saveImage(named: imageName!, image: selectedImage)
+        updateTheNoteWithImageTag(named: imageName!, image: selectedImage)
         
         //create and NSTextAttachment and add your image to it.
-        let attachment = NSTextAttachment()
-        attachment.image = selectedImage
-        let oldWidth = attachment.image!.size.width;
-        let scaleFactor = (oldWidth / (txtNote.frame.size.width - 10))
+//        let attachment = NSTextAttachment()
+//        attachment.image = selectedImage
+//        let oldWidth = attachment.image!.size.width;
+//        let scaleFactor = (oldWidth / (txtNote.frame.size.width - 10))
+//
+//        attachment.image = UIImage(cgImage: attachment.image!.cgImage!, scale: scaleFactor, orientation: .up)
+//        //put your NSTextAttachment into and attributedString
+//        let attString = NSAttributedString(attachment: attachment)
+//        //add this attributed string to the current position.
+//        txtNote.textStorage.insert(attString, at: txtNote.selectedRange.location)
+//
+//        print("\(txtNote.selectedRange.location)")
         
-        attachment.image = UIImage(cgImage: attachment.image!.cgImage!, scale: scaleFactor, orientation: .up)
-        //put your NSTextAttachment into and attributedString
-        let attString = NSAttributedString(attachment: attachment)
-        //add this attributed string to the current position.
-        txtNote.textStorage.insert(attString, at: txtNote.selectedRange.location)
+        
+        
         
 //        var attributedString :NSMutableAttributedString!
 //        attributedString = NSMutableAttributedString(attributedString: txtNote.attributedText)
@@ -253,8 +390,8 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
 //        attributedString.append(attrStringWithImage)
 //        txtNote.attributedText = attributedString
         
-        print("===Attribute text: \(txtNote.attributedText)")
-        print("===Only txtNote: \(txtNote)")
+//        print("===Attribute text: \(String(describing: txtNote.attributedText))")
+//        print("===Only txtNote: \(String(describing: txtNote))")
 //
 //        // Dismiss the picker.
         dismiss(animated: true, completion: nil)
@@ -267,17 +404,55 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         picker.dismiss(animated: true, completion: nil)
     }
     
+    func saveImage(named imageName: String, image: UIImage){
+        
+        let fileManager = FileManager.default
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileName = imageName
+        let fileURL = documentsDirectory.appendingPathComponent("unotes/attachments/\(fileName)")
+        
+        if let data = image.jpegData(compressionQuality:  1.0),
+            !fileManager.fileExists(atPath: fileURL.path) {
+            do {
+                do {
+                    try fileManager.createDirectory(atPath: "unotes/attachments/",
+                                                    withIntermediateDirectories: true,
+                                                    attributes: nil)
+                    print("Directory created: \(fileURL.path)")
+                } catch {
+                    print("Directory already exist: ", error.localizedDescription)
+                }
+                
+                try data.write(to: fileURL)
+                print("file saved")
+                
+            } catch {
+                print("Image already exist: ", error)
+                return
+            }
+        }
+        
+        print("======File PATH: \(fileURL.path)")
+    }
     
-    func saveImage(){
+    func loadImage(named imageName: String) -> UIImage? {
+    
+        let fileManager = FileManager.default
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileName = imageName
+        let fileURL = documentsDirectory.appendingPathComponent("unotes/attachments/\(fileName)")
+        
+        if fileManager.fileExists(atPath: fileURL.path), let imageData: Data = try? Data(contentsOf: fileURL),
+            let image: UIImage = UIImage(data: imageData, scale: UIScreen.main.scale) {
+            print("====Image loaded! \(image)")
+            return image
+        } else {
+            return nil
+        }
         
     }
     
-    func loadImages(){
-        
-    }
-    
-    
-    
+
 
     //MARK: - Map location functions
     
@@ -345,47 +520,27 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     
 }
 
-extension UITextView {
-    
-    func replaceTags(notes: String) {
-        
-    }
-    
-    
-    func getParts() -> [AnyObject] {
-        var parts = [AnyObject]()
-        
-        let attributedString = self.attributedText
-        let range = self.selectedRange//NSMakeRange(0, (attributedString?.length)!)
-        attributedString?.enumerateAttributes(in: range, options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (object, range, stop) in
-            if object.keys.contains(NSAttributedString.Key.attachment) {
-                if let attachment = object[NSAttributedString.Key.attachment] as? NSTextAttachment {
-                    if let image = attachment.image {
-                        parts.append(image)
-                    } else if let image = attachment.image(forBounds: attachment.bounds, textContainer: nil, characterIndex: range.location) {
-                        parts.append(image)
-                    }
-                }
-            } else {
-                let stringValue : String = attributedString!.attributedSubstring(from: range).string
-                if (!stringValue.trimmingCharacters(in: .whitespaces).isEmpty) {
-                    parts.append(stringValue as AnyObject)
-                }
-            }
-        }
-        return parts
+extension String {
+    var setTagImage: String{
+        return "[image]\(self)[/image]"
     }
 }
 
-//extension NSAttributedString.Key {
-//    static let imagePath = NSAttributedString.Key(rawValue: "imagePath")
-//}
+extension NSRegularExpression {
+    convenience init(_ pattern: String) {
+        do {
+            try self.init(pattern: pattern)
+        } catch {
+            preconditionFailure("Illegal regular expression: \(pattern).")
+        }
+    }
+}
 
-//extension NSImage {
-//    var imagePNGRepresentation: NSData {
-//        return NSBitmapImageRep(data: TIFFRepresentation!)!.representationUsingType(.NSPNGFileType, properties: [:])!
-//    }
-//    var imageJPGRepresentation: NSData {
-//        return NSBitmapImageRep(data: TIFFRepresentation!)!.representationUsingType(.NSJPEGFileType, properties: [:])!
-//    }
-//}
+extension NSTextAttachment {
+    func setImageHeight(width: CGFloat) {
+        guard let image = image else { return }
+        let ratio = image.size.height / image.size.width
+        
+        bounds = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: width, height: ratio * width)
+    }
+}

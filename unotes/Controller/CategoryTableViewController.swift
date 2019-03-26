@@ -20,8 +20,8 @@ class CategoryTableViewController: DefaultTableViewController {
         super.viewDidLoad()
         loadAllCategories()
         
-//        let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
-//        print("=====App DIR: \(documentDirectoryPath)")
+        let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
+        print("=====App DIR: \(String(describing: documentDirectoryPath))")
     }
     
     // MARK: - Table view data source

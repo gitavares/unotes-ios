@@ -101,24 +101,12 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         txtTitle.text = note?.title
         txtNote.text = note?.note
         
-//        loadFormattedTextView()
-        
         if note?.locationLatitude != "" {
             // call the load map location function
             loadLocation()
         }
         
     }
-    
-//    func loadFormattedTextView(){
-//        let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
-//        let attrString = NSAttributedString(string: note?.note! ?? "", attributes: attrs)
-//        textStorage = FormatTextStorage()
-//        textStorage.append(attrString)
-//
-//        txtNote.delegate = self
-//        view.addSubview(txtNote)
-//    }
     
     func updateTheNoteWithImageTag(named imageName: String, image: UIImage){
         //create and NSTextAttachment and add your image to it.
@@ -127,13 +115,10 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         
         let attachment = NSTextAttachment()
         attachment.image = image
-//        let oldWidth = attachment.image!.size.width;
-//        let scaleFactor = (oldWidth / (txtNote.frame.size.width - 10))
-//
-//        attachment.image = UIImage(cgImage: attachment.image!.cgImage!, scale: scaleFactor, orientation: .up)
         let imageInTags = imageName.setTagImage
-        //put your NSTextAttachment into and attributedString
+
         let attString = NSAttributedString(attachment: attachment)
+
         //add this attributed string to the current position.
         txtNote.textStorage.insert(attString, at: txtNote.selectedRange.location)
         let range = txtNote.selectedRange
@@ -143,130 +128,43 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         mutableAttributedString.endEditing()
         txtNote.attributedText = mutableAttributedString
         
-//        print("======attString: \(attString)")
-//        print("======txtNote.attributedText: \(String(describing: txtNote.attributedText))")
-//        print("======txtNote.textStorage: \(txtNote.textStorage)")
-//        print("======txtNote: \(String(describing: txtNote))")
-//        print("======txtNote TEXT: \(String(describing: txtNote.text))")
-        
-//        print("\(txtNote.selectedRange.location)")
-//
-//        print("===Attribute text: \(String(describing: txtNote.attributedText))")
-//        print("===Only txtNote: \(String(describing: txtNote))")
     }
     
     func decodeTheNoteImageTags() {
         
         let attributedString = NSMutableAttributedString(string: txtNote.text)
-        print("=====attributedString: \(attributedString)")
-        
         let range = NSRange(location: 0, length: attributedString.string.utf16.count)
         let regex = NSRegularExpression("\\[image\\](.*?)\\[/image\\]")
         
         for match in regex.matches(in: attributedString.string, options: [], range: range) {
+            let imageRange = match.range
+            
             if let rangeForImageName = Range(match.range(at: 1), in: attributedString.string){
-                
+
                 let imageName = String(attributedString.string[rangeForImageName])
                 print("======imageName: \(imageName)")
-                
-//                let imageNameRange = NSRange(imageName)
-                
+
                 if let image = loadImage(named: imageName) {
-                    
-//                    let textAttachment = NSTextAttachment()
-//                    textAttachment.image = UIImage(named: "Image")
-//                    textAttachment.setImageHeight(16) // Whatever you need to match your font
-//
-//                    let imageString = NSAttributedString(attachment: textAttachment)
-//                    yourAttributedString.appendAttributedString(imageString)
-                    
-                    
-                  
+
                     let attachment = NSTextAttachment()
                     attachment.image = image
-                    attachment.setImageHeight(width: txtNote.frame.size.width)
-//                    let oldWidth = attachment.image!.size.width
-//                    let scaleFactor = (oldWidth / (txtNote.frame.size.width - 10))
-//                    attachment.image = UIImage(cgImage: attachment.image!.cgImage!, scale: scaleFactor, orientation: .up)
-                    
+                    attachment.setImageWidth(width: txtNote.frame.size.width)
                     let attString = NSAttributedString(attachment: attachment)
-                    
-//                    attributedString.beginEditing()
-//                    attributedString.replaceCharacters(in: imageNameRange!, with: attString)
-//                    attributedString.endEditing()
-                    
+
                     //add this attributed string to the current position.
-                    txtNote.textStorage.insert(attString, at: txtNote.selectedRange.location)
+                    txtNote.textStorage.insert(attString, at: imageRange.location)
+
                 } else {
                     print("Image not found")
                 }
             }
+            regex.stringByReplacingMatches(in: txtNote.text, options: [], range: imageRange, withTemplate: "")
         }
         
-//        let matchesCount = regex.numberOfMatches(in: attributedString.string, options: [], range: range)
-//        print("======matchesCount: \(matchesCount)")
-//
-//        for _ in 0..<matchesCount {
-////                let match = regex.matches(in: attributedString.string, options: [], range: NSRange(location: 0, length: attributedString.string.utf16.count))[0]
-//            let match = regex.matches(in: attributedString.string, options: [], range: range)[0]
-//            print("======match: \(match)")
-//
-////                if let rangeForImageName = Range(match.range(at: 1), in: attributedString.string){
-//
-//            }
-//        }
+//        regex.stringByReplacingMatches(in: txtNote.text, options: [], range: range, withTemplate: "")
         
-            
-        
-        
-        
-//        let attachment = NSTextAttachment()
-//        attachment.image = loadImage(named: imageName)
-//        let oldWidth = attachment.image!.size.width;
-//        let scaleFactor = (oldWidth / (txtNote.frame.size.width - 10))
-//
-//        attachment.image = UIImage(cgImage: attachment.image!.cgImage!, scale: scaleFactor, orientation: .up)
-//        //put your NSTextAttachment into and attributedString
-//        let attString = NSAttributedString(attachment: attachment)
-//        //add this attributed string to the current position.
-//        txtNote.textStorage.insert(attString, at: txtNote.selectedRange.location)
-        
-//        return attributedString
-        
-        
-//        let attributedString = NSMutableAttributedString(string: self, attributes: nil)
-//        do {
-//            let regex = try NSRegularExpression(pattern: "<img>(.*?)</img>", options: [])
-//            let matchesCount = regex.matches(in: attributedString.string,
-//                                             options: [],
-//                                             range: NSRange(location: 0, length: attributedString.string.utf16.count)).count
-//            for _ in 0..<matchesCount {
-//                let match = regex.matches(in: attributedString.string,
-//                                          options: [],
-//                                          range: NSRange(location: 0, length: attributedString.string.utf16.count))[0]
-//                if let rangeForURL = Range(match.range(at: 1), in: attributedString.string) {
-//                    let imageLocalURL = String(attributedString.string[rangeForURL])
-//
-//                    let lowerBoundForImageLocalURLwrappedInTags = self.distance(from: self.startIndex, to: rangeForURL.lowerBound) - 5
-//                    let upperBoundForImageLocalURLwrappedInTags = self.distance(from: self.startIndex, to: rangeForURL.upperBound) + 6
-//                    if let localImage = UIImage.loadImageFrom(path: imageLocalURL)
-//                    {
-//                        let imageAttachment = NSTextAttachment()
-//                        let oldWidth = localImage.size.width
-//                        imageAttachment.image = localImage.resizeImage(scale: (UIScreen.main.bounds.width - 10)/oldWidth)
-//                        let imageString = NSMutableAttributedString(attachment: imageAttachment)
-//                        let rangeForImageLocalURLwrappedInTags = NSMakeRange(lowerBoundForImageLocalURLwrappedInTags, upperBoundForImageLocalURLwrappedInTags - lowerBoundForImageLocalURLwrappedInTags)
-//                        attributedString.beginEditing()
-//                        attributedString.replaceCharacters(in: rangeForImageLocalURLwrappedInTags,
-//                                                           with: imageString)
-//                        attributedString.endEditing()
-//                    }
-//                }
-//            }
-//        } catch(let error) {
-//            print(error.localizedDescription)
-//        }
-//        return attributedString
+//        regex.replaceMatches(in: mutableString, options: [], range: range, withTemplate: "")
+//        regex.stringByReplacingMatches(in: (txtNote?.text)!, options: [], range: range, withTemplate: "")
     }
     
     
@@ -342,62 +240,20 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
-        // The info dictionary may contain multiple representations of the image. You want to use the original.
         guard let selectedImage = info[.originalImage] as? UIImage else {
             fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
         
         let imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL
-        print("=====Image URL: \(String(describing: imageURL))")
-        
         let imageName = imageURL?.lastPathComponent
-        print("=====Image NAME: \(String(describing: imageName))")
-
-        print("Image------:\(selectedImage)")
         
         //save the image
         saveImage(named: imageName!, image: selectedImage)
+        
+        //setting tag to the image range
         updateTheNoteWithImageTag(named: imageName!, image: selectedImage)
         
-        //create and NSTextAttachment and add your image to it.
-//        let attachment = NSTextAttachment()
-//        attachment.image = selectedImage
-//        let oldWidth = attachment.image!.size.width;
-//        let scaleFactor = (oldWidth / (txtNote.frame.size.width - 10))
-//
-//        attachment.image = UIImage(cgImage: attachment.image!.cgImage!, scale: scaleFactor, orientation: .up)
-//        //put your NSTextAttachment into and attributedString
-//        let attString = NSAttributedString(attachment: attachment)
-//        //add this attributed string to the current position.
-//        txtNote.textStorage.insert(attString, at: txtNote.selectedRange.location)
-//
-//        print("\(txtNote.selectedRange.location)")
-        
-        
-        
-        
-//        var attributedString :NSMutableAttributedString!
-//        attributedString = NSMutableAttributedString(attributedString: txtNote.attributedText)
-//        let textAttachment = NSTextAttachment()
-//        textAttachment.image = selectedImage
-//
-//        let oldWidth = textAttachment.image!.size.width;
-//        let scaleFactor = (oldWidth / (txtNote.frame.size.width - 10))
-//
-//        textAttachment.image = UIImage(cgImage: textAttachment.image!.cgImage!, scale: scaleFactor, orientation: .up)
-//
-//        let attrStringWithImage = NSAttributedString(attachment: textAttachment)
-//        attributedString.append(attrStringWithImage)
-//        txtNote.attributedText = attributedString
-        
-//        print("===Attribute text: \(String(describing: txtNote.attributedText))")
-//        print("===Only txtNote: \(String(describing: txtNote))")
-//
-//        // Dismiss the picker.
         dismiss(animated: true, completion: nil)
-        
-        
-        // save the image with the same name and in the same folder. Use a kind of tag to be replaced when fetch the note again
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -431,8 +287,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
                 return
             }
         }
-        
-        print("======File PATH: \(fileURL.path)")
+    
     }
     
     func loadImage(named imageName: String) -> UIImage? {
@@ -444,7 +299,6 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         
         if fileManager.fileExists(atPath: fileURL.path), let imageData: Data = try? Data(contentsOf: fileURL),
             let image: UIImage = UIImage(data: imageData, scale: UIScreen.main.scale) {
-            print("====Image loaded! \(image)")
             return image
         } else {
             return nil
@@ -537,7 +391,7 @@ extension NSRegularExpression {
 }
 
 extension NSTextAttachment {
-    func setImageHeight(width: CGFloat) {
+    func setImageWidth(width: CGFloat) {
         guard let image = image else { return }
         let ratio = image.size.height / image.size.width
         

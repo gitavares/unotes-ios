@@ -18,6 +18,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     var selectedCategory = Category()
     var note: Note?
     var isNew = Bool()
+    var countMatchesDone = 0
     
     // for location
     var locationManager = CLLocationManager()
@@ -30,6 +31,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     @IBOutlet var txtNote: UITextView!
     @IBOutlet var txtTitle: UITextField!
     @IBOutlet var mapLocation: MKMapView!
+    @IBOutlet weak var locationButton: UIBarButtonItem!
     
     
     
@@ -40,15 +42,43 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         pickerController.delegate = self
         pickerController.allowsEditing = true
         
+//        let customLocationButton = UIButton(type: .custom)
+//        //set image for button
+//        customLocationButton.setImage(UIImage(named: "location"), for: .normal)
+//        //set frame
+//        customLocationButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+//
+//        let barButton = UIBarButtonItem(customView: customLocationButton)
+
+//        locationButton.image = UIImage(named: "location")
+        locationButton.image = UIImage(image: UIImage(named: "location"), scaledTo: CGSize(width: 30, height: 30))
+        
+        
+//        let barButton = UIBarButtonItem(customView: customLocationButton)
+        
+        
+        
+
 //        let TapGesture = UITapGestureRecognizer(target: self, action: #selector(tapDetected(sender:)))
 //        TapGesture.delegate = self as? UIGestureRecognizerDelegate
 //        txtNote.addGestureRecognizer(TapGesture)
-        
+
         loadTheNote()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // set function to code here also
+//        txtNote.delegate = self
+//        pickerController.delegate = self
+//        pickerController.allowsEditing = true
+//
+//        //        let TapGesture = UITapGestureRecognizer(target: self, action: #selector(tapDetected(sender:)))
+//        //        TapGesture.delegate = self as? UIGestureRecognizerDelegate
+//        //        txtNote.addGestureRecognizer(TapGesture)
+//
+//        loadTheNote()
+        
         decodeTheNoteImageTags()
     }
     
@@ -102,9 +132,10 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         txtNote.text = note?.note
         
         if note?.locationLatitude != "" {
-            // call the load map location function
             loadLocation()
         }
+        
+//        decodeTheNoteImageTags()
         
     }
     
@@ -136,35 +167,40 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         let range = NSRange(location: 0, length: attributedString.string.utf16.count)
         let regex = NSRegularExpression("\\[image\\](.*?)\\[/image\\]")
         
-        for match in regex.matches(in: attributedString.string, options: [], range: range) {
+//        let numberMatches = regex.numberOfMatches(in: attributedString.string, options: [], range: range)
+        
+        for match in regex.matches(in: attributedString.string, options: [], range: range).reversed() {
             let imageRange = match.range
             
             if let rangeForImageName = Range(match.range(at: 1), in: attributedString.string){
-
+                
                 let imageName = String(attributedString.string[rangeForImageName])
                 print("======imageName: \(imageName)")
-
+                
                 if let image = loadImage(named: imageName) {
 
                     let attachment = NSTextAttachment()
                     attachment.image = image
                     attachment.setImageWidth(width: txtNote.frame.size.width)
                     let attString = NSAttributedString(attachment: attachment)
-
+                    
+//                    attributedString.beginEditing()
+//                    attributedString.replaceCharacters(in: imageRange, with: attString)
+//                    attributedString.endEditing()
+                    
+//                    attributedString = NSMutableAttributedString(string: txtNote.text)
+                    
                     //add this attributed string to the current position.
                     txtNote.textStorage.insert(attString, at: imageRange.location)
-
+                    
                 } else {
                     print("Image not found")
                 }
             }
-            regex.stringByReplacingMatches(in: txtNote.text, options: [], range: imageRange, withTemplate: "")
         }
         
-//        regex.stringByReplacingMatches(in: txtNote.text, options: [], range: range, withTemplate: "")
+//        txtNote.attributedText = attributedString
         
-//        regex.replaceMatches(in: mutableString, options: [], range: range, withTemplate: "")
-//        regex.stringByReplacingMatches(in: (txtNote?.text)!, options: [], range: range, withTemplate: "")
     }
     
     
@@ -206,7 +242,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
 //        }
 //    }
     
-    //MARK: - Images functions
+    //MARK: - Buttons Actions
     
     @IBAction func addImage(_ sender: Any) {
         
@@ -238,6 +274,59 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         present(pickerController, animated: true, completion: nil)
     }
     
+    @IBAction func locationButton(_ sender: UIBarButtonItem) {
+        self.performSegue(withIdentifier: "goToLocation", sender: self)
+    }
+    
+    @IBAction func editNote(_ sender: UIBarButtonItem) {
+//        let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+//
+//        let editLocation = UIAlertAction(title: "View/Edit Location Note", style: .default) { (action) in
+//            self.performSegue(withIdentifier: "goToLocation", sender: self)
+//        }
+//
+//        let deleteNote = UIAlertAction(title: "Delete Note", style: .default) { (action) in
+//            print("Delete note choosen")
+//        }
+//
+//
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+//
+//        alertController.addAction(editLocation)
+//        alertController.addAction(deleteNote)
+//        alertController.addAction(cancelAction)
+//
+//        present(alertController, animated: true, completion: nil)
+        
+    }
+    
+    //MARK: - Prepare Segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "goToLocation" {
+            if let location = segue.destination as? EditLocationViewController {
+
+                location.selectedNote = selectedNote
+                location.selectedCategory = selectedCategory
+                location.note = note
+                
+                if let currentLatitude = note?.locationLatitude {
+                    location.latitude = Double(currentLatitude) ?? 0
+                }
+                
+                if let currentLongitude = note?.locationLongitude  {
+                    location.longitude = Double(currentLongitude) ?? 0
+                }
+
+            }
+        }
+        
+    }
+    
+    
+    
+    //MARK: - Image functions
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
         guard let selectedImage = info[.originalImage] as? UIImage else {
@@ -254,6 +343,8 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         updateTheNoteWithImageTag(named: imageName!, image: selectedImage)
         
         dismiss(animated: true, completion: nil)
+        
+        
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -307,21 +398,18 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     }
     
 
-
     //MARK: - Map location functions
     
     func loadLocation() {
-        
+
         if let savedLatitude = note?.locationLatitude {
             latitude = Double(savedLatitude) ?? 0
         }
-        
+
         if let savedLongitude = note?.locationLongitude  {
             longitude = Double(savedLongitude) ?? 0
         }
-        
-        mapLocation.delegate = self
-        
+
         // To get authorization to get the current location
         if CLLocationManager.locationServicesEnabled() {
             self.locationManager.requestWhenInUseAuthorization()
@@ -329,47 +417,21 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
         }
-        
-        //Zoom to user location
-        if let userLocation = locationManager.location?.coordinate {
-            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 200, longitudinalMeters: 200)
-            mapLocation.setRegion(viewRegion, animated: false)
-        }
-        
+
         DispatchQueue.main.async {
             self.locationManager.startUpdatingLocation()
         }
-        
+
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
+
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
 
         if latitude == 0 {
             latitude = locValue.latitude
             longitude = locValue.longitude
         }
-        
-        let noteLocation = CLLocationCoordinate2DMake(latitude, longitude)
-    
-        let notePlacemark = MKPlacemark(coordinate: noteLocation, addressDictionary: nil)
-        
-        let noteAnnotation = MKPointAnnotation()
-        
-        if let location = notePlacemark.location {
-            noteAnnotation.coordinate = location.coordinate
-        }
-        
-        self.mapLocation.showAnnotations([noteAnnotation], animated: true)
-    }
-    
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        let renderer = MKPolylineRenderer(overlay: overlay)
-        renderer.strokeColor = UIColor.red
-        renderer.lineWidth = 5
-        
-        return renderer
     }
     
 }
@@ -396,5 +458,18 @@ extension NSTextAttachment {
         let ratio = image.size.height / image.size.width
         
         bounds = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: width, height: ratio * width)
+    }
+}
+
+extension NSAttributedString {
+    var countOfImagesInAttachment: Int {
+        var count = 0
+        self.enumerateAttribute(.attachment , in: NSMakeRange(0, self.length), options: [], using: { attribute, range, _ in
+            if let attachment = attribute as? NSTextAttachment,
+                let _ = attachment.image {
+                count += 1
+            }
+        })
+        return count
     }
 }

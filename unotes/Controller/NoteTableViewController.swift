@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class NoteTableViewController: DefaultTableViewController, UISearchBarDelegate {
     
@@ -47,10 +48,18 @@ class NoteTableViewController: DefaultTableViewController, UISearchBarDelegate {
         title = selectedCategory?.name ?? "Notes"
         loadAllNotesByCategory()
         
-        
+        updateNavBar(withHexCode: UIColor.flatYellowDark.hexValue())
+    }
     
-//        guard let color = selectedCategory?.color  else {fatalError()}
-//        updateNavBar(withHexCode: color)
+//    //MARK: - NavBar Setup Methods
+    func updateNavBar(withHexCode colorHexCode: String){
+        guard let navBar = navigationController?.navigationBar else {fatalError("Navigation controller doesn't exist")}
+        guard let navBarColor = UIColor(hexString: colorHexCode) else {fatalError()}
+
+        navBar.barTintColor = navBarColor
+        navBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
+        navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: ContrastColorOf(navBarColor, returnFlat: true)]
+//        searchBar.barTintColor = navBarColor
     }
 
     // MARK: - Table view data source

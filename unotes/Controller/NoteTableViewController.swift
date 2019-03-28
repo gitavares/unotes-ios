@@ -36,8 +36,9 @@ class NoteTableViewController: DefaultTableViewController, UISearchBarDelegate {
                     let customizedCancelButton:UIButton = subView2 as! UIButton
                     customizedCancelButton.isEnabled = true
                     customizedCancelButton.setTitle("", for: UIControl.State.normal)
-                    let image1 = UIImage(named: "sort")
-                    customizedCancelButton.setBackgroundImage(image1, for: UIControl.State.normal)
+                    let imageButton = UIImage(named: "sort")
+//                    let imageButton = UIImage(image: UIImage(named: "sort"), scaledTo: CGSize(width: 20, height: 30))
+                    customizedCancelButton.setBackgroundImage(imageButton, for: UIControl.State.normal)
                 }
             }
         }
@@ -47,20 +48,9 @@ class NoteTableViewController: DefaultTableViewController, UISearchBarDelegate {
     override func viewWillAppear(_ animated: Bool) {
         title = selectedCategory?.name ?? "Notes"
         loadAllNotesByCategory()
-        
-        updateNavBar(withHexCode: UIColor.flatYellowDark.hexValue())
+
     }
     
-//    //MARK: - NavBar Setup Methods
-    func updateNavBar(withHexCode colorHexCode: String){
-        guard let navBar = navigationController?.navigationBar else {fatalError("Navigation controller doesn't exist")}
-        guard let navBarColor = UIColor(hexString: colorHexCode) else {fatalError()}
-
-        navBar.barTintColor = navBarColor
-        navBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
-        navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: ContrastColorOf(navBarColor, returnFlat: true)]
-//        searchBar.barTintColor = navBarColor
-    }
 
     // MARK: - Table view data source
 

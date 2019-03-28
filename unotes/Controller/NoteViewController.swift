@@ -19,6 +19,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     var note: Note?
     var isNew = Bool()
     var countMatchesDone = 0
+    var previusNote: Note?
     
     // for location
     var locationManager = CLLocationManager()
@@ -38,47 +39,19 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        previusNote = note
+        
         txtNote.delegate = self
         pickerController.delegate = self
         pickerController.allowsEditing = true
         
-//        let customLocationButton = UIButton(type: .custom)
-//        //set image for button
-//        customLocationButton.setImage(UIImage(named: "location"), for: .normal)
-//        //set frame
-//        customLocationButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-//
-//        let barButton = UIBarButtonItem(customView: customLocationButton)
-
-//        locationButton.image = UIImage(named: "location")
         locationButton.image = UIImage(image: UIImage(named: "location"), scaledTo: CGSize(width: 30, height: 30))
-        
-        
-//        let barButton = UIBarButtonItem(customView: customLocationButton)
-        
-        
-        
-
-//        let TapGesture = UITapGestureRecognizer(target: self, action: #selector(tapDetected(sender:)))
-//        TapGesture.delegate = self as? UIGestureRecognizerDelegate
-//        txtNote.addGestureRecognizer(TapGesture)
 
         loadTheNote()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        // set function to code here also
-//        txtNote.delegate = self
-//        pickerController.delegate = self
-//        pickerController.allowsEditing = true
-//
-//        //        let TapGesture = UITapGestureRecognizer(target: self, action: #selector(tapDetected(sender:)))
-//        //        TapGesture.delegate = self as? UIGestureRecognizerDelegate
-//        //        txtNote.addGestureRecognizer(TapGesture)
-//
-//        loadTheNote()
-        
         decodeTheNoteImageTags()
     }
     
@@ -111,6 +84,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
             } catch {
                 print("Error saving the note: \(error)")
             }
+            locationButton.isEnabled = true
             
         } else {
             let alertBox = UIAlertController(title: "The title can not be null", message: "", preferredStyle: .alert)
@@ -131,9 +105,9 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         txtTitle.text = note?.title
         txtNote.text = note?.note
         
-        if note?.locationLatitude != "" {
+//        if note?.locationLatitude != "" {
             loadLocation()
-        }
+//        }
         
 //        decodeTheNoteImageTags()
         
@@ -272,6 +246,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         
         present(alertController, animated: true, completion: nil)
         present(pickerController, animated: true, completion: nil)
+        
     }
     
     @IBAction func locationButton(_ sender: UIBarButtonItem) {
@@ -311,12 +286,15 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
                 location.note = note
                 
                 if let currentLatitude = note?.locationLatitude {
-                    location.latitude = Double(currentLatitude) ?? 0
+                    location.latitude = Double(currentLatitude) ?? latitude
                 }
                 
                 if let currentLongitude = note?.locationLongitude  {
-                    location.longitude = Double(currentLongitude) ?? 0
+                    location.longitude = Double(currentLongitude) ?? longitude
                 }
+                
+                print("location.latitude: \(location.latitude)")
+                print("location.longitude: \(location.longitude)")
 
             }
         }
@@ -409,6 +387,8 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         if let savedLongitude = note?.locationLongitude  {
             longitude = Double(savedLongitude) ?? 0
         }
+        
+//        mapLocation.delegate = self
 
         // To get authorization to get the current location
         if CLLocationManager.locationServicesEnabled() {
@@ -431,6 +411,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         if latitude == 0 {
             latitude = locValue.latitude
             longitude = locValue.longitude
+            locationButton.isEnabled = false
         }
     }
     

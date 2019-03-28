@@ -27,6 +27,10 @@ class CategoryTableViewController: DefaultTableViewController {
         updateNavBar(withHexCode: UIColor.flatYellowDark.hexValue())
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        loadAllCategories()
+    }
+    
     //MARK: - NavBar Setup Methods
     func updateNavBar(withHexCode colorHexCode: String){
         guard let navBar = navigationController?.navigationBar else {fatalError("Navigation controller doesn't exist")}

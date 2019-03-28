@@ -131,13 +131,13 @@ class EditLocationViewController: UIViewController, MKMapViewDelegate, CLLocatio
     
     func loadLocation() {
         
-        if let savedLatitude = note?.locationLatitude {
-            latitude = Double(savedLatitude) ?? 0
-        }
+//        if let savedLatitude = note?.locationLatitude {
+        latitude = Double(latitude)
+//        }
         
-        if let savedLongitude = note?.locationLongitude  {
-            longitude = Double(savedLongitude) ?? 0
-        }
+//        if let savedLongitude = note?.locationLongitude  {
+        longitude = Double(longitude)
+//        }
         
         mapLocation.delegate = self
         

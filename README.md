@@ -25,6 +25,8 @@ Enjoy
 - Need refactoring
 - Bugs to be solved
 - New features will be released
+- Check all constraints
+- Test all size devices
 
 ===============================================
 # Solving some compilation issues

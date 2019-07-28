@@ -28,8 +28,9 @@ Enjoy
 
 ===============================================
 # Solving some compilation issues
-- You may face this problem: "Could not build Objective-C module 'RealmSwift'". In this case, follow these steps:
--- Go To: Product > Schemes > New Scheme...
--- Select: RealmSwift and click OK
--- Build the RealmSwift target (cmd + b)
+You may face this problem: "Could not build Objective-C module 'RealmSwift'". In this case, follow these steps:
+- Go To: Product > Schemes > New Scheme...
+- Select: RealmSwift and click OK
+- Build the RealmSwift target (cmd + b)
+
 Source: https://github.com/realm/realm-cocoa/issues/5973#issuecomment-435550939

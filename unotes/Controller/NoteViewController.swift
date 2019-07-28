@@ -52,7 +52,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        decodeTheNoteImageTags()
+//        decodeTheNoteImageTags()
 //         loadTheNote()
     }
     
@@ -320,6 +320,19 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         
         //setting tag to the image range
         updateTheNoteWithImageTag(named: imageName!, image: selectedImage)
+        
+        // saving the note with the new image
+        do {
+            try realm.write {
+                note?.note = txtNote.text ?? ""
+                note?.modifiedDate = Date()
+            }
+        } catch {
+            print("Error saving the note with the new image: \(error)")
+        }
+        
+        // loading the note again
+        loadTheNote()
         
         dismiss(animated: true, completion: nil)
         

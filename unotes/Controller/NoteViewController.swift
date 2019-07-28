@@ -53,6 +53,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     
     override func viewWillAppear(_ animated: Bool) {
         decodeTheNoteImageTags()
+//         loadTheNote()
     }
     
     
@@ -109,7 +110,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
             loadLocation()
 //        }
         
-//        decodeTheNoteImageTags()
+        decodeTheNoteImageTags()
         
     }
     
@@ -334,13 +335,17 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         let fileManager = FileManager.default
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let fileName = imageName
-        let fileURL = documentsDirectory.appendingPathComponent("unotes/attachments/\(fileName)")
+//        let fileURL = documentsDirectory.appendingPathComponent("unotes/attachments/\(fileName)")
+        let fileURL = documentsDirectory.appendingPathComponent("\(fileName)")
         
         if let data = image.jpegData(compressionQuality:  1.0),
             !fileManager.fileExists(atPath: fileURL.path) {
             do {
                 do {
-                    try fileManager.createDirectory(atPath: "unotes/attachments/",
+//                    try fileManager.createDirectory(atPath: "unotes/attachments/",
+//                                                    withIntermediateDirectories: true,
+//                                                    attributes: nil)
+                    try fileManager.createDirectory(atPath: "",
                                                     withIntermediateDirectories: true,
                                                     attributes: nil)
                     print("Directory created: \(fileURL.path)")
@@ -364,7 +369,8 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         let fileManager = FileManager.default
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let fileName = imageName
-        let fileURL = documentsDirectory.appendingPathComponent("unotes/attachments/\(fileName)")
+//        let fileURL = documentsDirectory.appendingPathComponent("unotes/attachments/\(fileName)")
+        let fileURL = documentsDirectory.appendingPathComponent("\(fileName)")
         
         if fileManager.fileExists(atPath: fileURL.path), let imageData: Data = try? Data(contentsOf: fileURL),
             let image: UIImage = UIImage(data: imageData, scale: UIScreen.main.scale) {

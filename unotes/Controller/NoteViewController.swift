@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import RealmSwift
+import Photos
 
 class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate, UINavigationControllerDelegate {
     
@@ -45,6 +46,8 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         pickerController.delegate = self
         pickerController.allowsEditing = true
         
+        checkPermission()
+        
         locationButton.image = UIImage(image: UIImage(named: "location"), scaledTo: CGSize(width: 30, height: 30))
 
         loadTheNote()
@@ -59,6 +62,46 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     
     //MARK: - Buttons Action
     @IBAction func saveNote(_ sender: UIBarButtonItem) {
+        saveTheNote()
+//        if (txtTitle.text != "") {
+//
+//            do {
+//                try realm.write {
+//                    if isNew {
+//                        let newNote = Note()
+//                        newNote.title = txtTitle.text!
+//                        newNote.note = txtNote.text ?? ""
+//                        newNote.modifiedDate = Date()
+//                        newNote.locationLatitude = String(latitude)
+//                        newNote.locationLongitude = String(longitude)
+//                        newNote.createdDate = Date()
+//                        isNew = false
+//                        selectedCategory.notes.append(newNote)
+//                        note = newNote
+//                    } else {
+//                        note?.title = txtTitle.text!
+//                        note?.note = txtNote.text ?? ""
+//                        note?.modifiedDate = Date()
+//                        //                note?.locationLatitude
+//                        //                note?.locationLongitude
+//                    }
+//                }
+//            } catch {
+//                print("Error saving the note: \(error)")
+//            }
+//            locationButton.isEnabled = true
+//
+//        } else {
+//            let alertBox = UIAlertController(title: "The title can not be null", message: "", preferredStyle: .alert)
+//
+//            let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (cancelAction) in return }
+//
+//            alertBox.addAction(cancelAction)
+//            present(alertBox, animated: true, completion: nil)
+//        }
+    }
+    
+    func saveTheNote(){
         if (txtTitle.text != "") {
             
             do {
@@ -306,7 +349,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     
     //MARK: - Image functions
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
         guard let selectedImage = info[.originalImage] as? UIImage else {
             fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
@@ -314,6 +357,9 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         
         let imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL
         let imageName = imageURL?.lastPathComponent
+        
+        //save the note before save the image
+        saveTheNote()
         
         //save the image
         saveImage(named: imageName!, image: selectedImage)
@@ -332,6 +378,7 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         }
         
         // loading the note again
+        selectedNote = note
         loadTheNote()
         
         dismiss(animated: true, completion: nil)
@@ -392,6 +439,30 @@ class NoteViewController: UIViewController, MKMapViewDelegate, CLLocationManager
             return nil
         }
         
+    }
+    
+    func checkPermission() {
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+        switch photoAuthorizationStatus {
+        case .authorized:
+            print("Access is granted by user")
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization({
+                (newStatus) in
+                print("status is \(newStatus)")
+                if newStatus ==  PHAuthorizationStatus.authorized {
+                    /* do stuff here */
+                    print("success")
+                }
+            })
+            print("It is not determined until now")
+        case .restricted:
+            // same same
+            print("User do not have access to photo album.")
+        case .denied:
+            // same same
+            print("User has denied the permission.")
+        }
     }
     
 
